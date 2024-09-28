@@ -1,0 +1,279 @@
+<mujoco model="rex">
+    <compiler coordinate="local"/>
+    <option timestep="0.002"/>
+    <size njmax="1000" nconmax="100"/>
+
+    <!-- Assets -->
+    <asset>
+        <!-- Materials -->
+        <material name="yellow" rgba="0.92 0.83 0.0 1"/>
+        <material name="black" rgba="0.1 0.1 0.1 1"/>
+        <material name="grey" rgba="0.6 0.6 0.6 1"/>
+
+        <!-- Meshes -->
+        <mesh name="mainbody" file="stl/mainbody.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="frontpart" file="stl/frontpart.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="backpart" file="stl/backpart.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lshoulder" file="stl/lshoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="larm_cover" file="stl/larm_cover.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="larm" file="stl/larm.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lfoot" file="stl/lfoot.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rshoulder" file="stl/rshoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rarm_cover" file="stl/rarm_cover.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rarm" file="stl/rarm.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rfoot" file="stl/rfoot.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="foot" file="stl/foot.stl" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <!-- Worldbody -->
+    <worldbody>
+        <!-- Base Link -->
+        <body name="base_link">
+            <!-- Visual Geometry -->
+            <geom type="mesh" mesh="mainbody" material="black" pos="-0.045 -0.060 -0.015"/>
+            <!-- Collision Geometry -->
+            <geom type="box" size="0.07 0.055 0.035" pos="0 0 0" rgba="0 0 0 0"/>
+            <!-- Inertial Properties -->
+            <inertial mass="1.20" diaginertia="100 100 100" pos="0 0 0"/>
+
+            <!-- Chassis Front Link -->
+            <body name="chassis_front_link" pos="0 0 0">
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="frontpart" material="yellow" pos="-0.040 -0.060 -0.0140"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.029 0.055 0.035" pos="-0.145 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.05" diaginertia="100 100 100" pos="0 0 0"/>
+            </body>
+
+            <!-- Chassis Rear Link -->
+            <body name="chassis_rear_link" pos="0 0 0">
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="backpart" material="yellow" pos="-0.040 -0.060 -0.0140"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.02 0.055 0.035" pos="0.135 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.05" diaginertia="100 100 100" pos="0 0 0"/>
+            </body>
+
+            <!-- Front Left Leg -->
+            <body name="front_left_shoulder_link" pos="-0.093 -0.036 0">
+                <joint name="motor_front_left_shoulder" type="hinge" axis="1 0 0" range="-1.0 1.0" damping="0.0" frictionloss="0.5"/>
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="lshoulder" material="black" pos="-0.135 -0.02 -0.01"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.022 0.019 0.035" pos="0 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                <!-- Front Left Leg Cover -->
+                <body name="front_left_leg_link_cover" pos="0 0 0">
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="larm_cover" material="yellow" pos="-0.125 -0.01 -0.02"/>
+                </body>
+
+                <!-- Front Left Leg Link -->
+                <body name="front_left_leg_link" pos="0 -0.052 0">
+                    <joint name="motor_front_left_leg" type="hinge" axis="0 1 0" range="-2.17 0.97" damping="0.0" frictionloss="0.0"/>
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="larm" material="black" pos="-0.125 0.04 -0.02"/>
+                    <!-- Collision Geometry -->
+                    <geom type="box" size="0.014 0.018 0.06" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                    <!-- Inertial Properties -->
+                    <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                    <!-- Front Left Foot Link -->
+                    <body name="front_left_foot_link" pos="-0.01 0 -0.12">
+                        <joint name="foot_motor_front_left" type="hinge" axis="0 1 0" range="-0.1 2.59" damping="0.0" frictionloss="0.5"/>
+                        <!-- Visual Geometry -->
+                        <geom type="mesh" mesh="lfoot" material="black" pos="-0.120 0.04 0.1"/>
+                        <!-- Collision Geometry -->
+                        <geom type="box" size="0.013 0.010 0.0575" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                        <!-- Inertial Properties -->
+                        <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                        <!-- Front Left Toe Link -->
+                        <body name="front_left_toe_link" pos="0 0 -0.115">
+                            <!-- Visual Geometry -->
+                            <geom type="mesh" mesh="foot" material="grey" pos="0 -0.01 0" euler="0 -0.40010 0"/>
+                            <!-- Collision Geometry -->
+                            <geom type="mesh" mesh="foot" pos="0 -0.01 0" euler="0 -0.40010 0" contype="1" conaffinity="1"/>
+                            <!-- Inertial Properties -->
+                            <inertial mass="0.005" diaginertia="100 100 100" pos="0 0 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <!-- Front Right Leg -->
+            <body name="front_right_shoulder_link" pos="-0.093 0.036 0">
+                <joint name="motor_front_right_shoulder" type="hinge" axis="1 0 0" range="-1.0 1.0" damping="0.0" frictionloss="0.5"/>
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="rshoulder" material="black" pos="-0.135 -0.09 -0.01"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.022 0.019 0.035" pos="0 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                <!-- Front Right Leg Cover -->
+                <body name="front_right_leg_link_cover" pos="0 0 0">
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="rarm_cover" material="yellow" pos="-0.125 -0.10 -0.02"/>
+                </body>
+
+                <!-- Front Right Leg Link -->
+                <body name="front_right_leg_link" pos="0 0.052 0">
+                    <joint name="motor_front_right_leg" type="hinge" axis="0 1 0" range="-2.17 0.97" damping="0.0" frictionloss="0.0"/>
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="rarm" material="black" pos="-0.125 -0.15 -0.02"/>
+                    <!-- Collision Geometry -->
+                    <geom type="box" size="0.014 0.018 0.06" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                    <!-- Inertial Properties -->
+                    <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                    <!-- Front Right Foot Link -->
+                    <body name="front_right_foot_link" pos="-0.01 0 -0.12">
+                        <joint name="foot_motor_front_right" type="hinge" axis="0 1 0" range="-0.1 2.59" damping="0.0" frictionloss="0.5"/>
+                        <!-- Visual Geometry -->
+                        <geom type="mesh" mesh="rfoot" material="black" pos="-0.120 -0.15 0.1"/>
+                        <!-- Collision Geometry -->
+                        <geom type="box" size="0.013 0.010 0.0575" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                        <!-- Inertial Properties -->
+                        <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                        <!-- Front Right Toe Link -->
+                        <body name="front_right_toe_link" pos="0 0 -0.115">
+                            <!-- Visual Geometry -->
+                            <geom type="mesh" mesh="foot" material="grey" pos="0 -0.01 0" euler="0 -0.40010 0"/>
+                            <!-- Collision Geometry -->
+                            <geom type="mesh" mesh="foot" pos="0 -0.01 0" euler="0 -0.40010 0" contype="1" conaffinity="1"/>
+                            <!-- Inertial Properties -->
+                            <inertial mass="0.005" diaginertia="100 100 100" pos="0 0 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <!-- Rear Left Leg -->
+            <body name="rear_left_shoulder_link" pos="0.093 -0.036 0">
+                <joint name="motor_rear_left_shoulder" type="hinge" axis="1 0 0" range="-1.0 1.0" damping="0.0" frictionloss="0.5"/>
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="lshoulder" material="black" pos="-0.135 -0.02 -0.01"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.022 0.019 0.035" pos="0 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                <!-- Rear Left Leg Cover -->
+                <body name="rear_left_leg_link_cover" pos="0 0 0">
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="larm_cover" material="yellow" pos="-0.125 -0.01 -0.02"/>
+                </body>
+
+                <!-- Rear Left Leg Link -->
+                <body name="rear_left_leg_link" pos="0 -0.052 0">
+                    <joint name="motor_rear_left_leg" type="hinge" axis="0 1 0" range="-2.17 0.97" damping="0.0" frictionloss="0.0"/>
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="larm" material="black" pos="-0.125 0.04 -0.02"/>
+                    <!-- Collision Geometry -->
+                    <geom type="box" size="0.014 0.018 0.06" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                    <!-- Inertial Properties -->
+                    <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                    <!-- Rear Left Foot Link -->
+                    <body name="rear_left_foot_link" pos="-0.01 0 -0.12">
+                        <joint name="foot_motor_rear_left" type="hinge" axis="0 1 0" range="-0.1 2.59" damping="0.0" frictionloss="0.5"/>
+                        <!-- Visual Geometry -->
+                        <geom type="mesh" mesh="lfoot" material="black" pos="-0.120 0.04 0.1"/>
+                        <!-- Collision Geometry -->
+                        <geom type="box" size="0.013 0.010 0.0575" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                        <!-- Inertial Properties -->
+                        <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                        <!-- Rear Left Toe Link -->
+                        <body name="rear_left_toe_link" pos="0 0 -0.115">
+                            <!-- Visual Geometry -->
+                            <geom type="mesh" mesh="foot" material="grey" pos="0 -0.01 0" euler="0 -0.40010 0"/>
+                            <!-- Collision Geometry -->
+                            <geom type="mesh" mesh="foot" pos="0 -0.01 0" euler="0 -0.40010 0" contype="1" conaffinity="1"/>
+                            <!-- Inertial Properties -->
+                            <inertial mass="0.005" diaginertia="100 100 100" pos="0 0 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <!-- Rear Right Leg -->
+            <body name="rear_right_shoulder_link" pos="0.093 0.036 0">
+                <joint name="motor_rear_right_shoulder" type="hinge" axis="1 0 0" range="-1.0 1.0" damping="0.0" frictionloss="0.5"/>
+                <!-- Visual Geometry -->
+                <geom type="mesh" mesh="rshoulder" material="black" pos="-0.135 -0.09 -0.01"/>
+                <!-- Collision Geometry -->
+                <geom type="box" size="0.022 0.019 0.035" pos="0 0 0" rgba="0 0 0 0"/>
+                <!-- Inertial Properties -->
+                <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                <!-- Rear Right Leg Cover -->
+                <body name="rear_right_leg_link_cover" pos="0 0 0">
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="rarm_cover" material="yellow" pos="-0.125 -0.10 -0.02"/>
+                </body>
+
+                <!-- Rear Right Leg Link -->
+                <body name="rear_right_leg_link" pos="0 0.052 0">
+                    <joint name="motor_rear_right_leg" type="hinge" axis="0 1 0" range="-2.17 0.97" damping="0.0" frictionloss="0.0"/>
+                    <!-- Visual Geometry -->
+                    <geom type="mesh" mesh="rarm" material="black" pos="-0.125 -0.15 -0.02"/>
+                    <!-- Collision Geometry -->
+                    <geom type="box" size="0.014 0.018 0.06" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                    <!-- Inertial Properties -->
+                    <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                    <!-- Rear Right Foot Link -->
+                    <body name="rear_right_foot_link" pos="-0.01 0 -0.12">
+                        <joint name="foot_motor_rear_right" type="hinge" axis="0 1 0" range="-0.1 2.59" damping="0.0" frictionloss="0.5"/>
+                        <!-- Visual Geometry -->
+                        <geom type="mesh" mesh="rfoot" material="black" pos="-0.120 -0.15 0.1"/>
+                        <!-- Collision Geometry -->
+                        <geom type="box" size="0.013 0.010 0.0575" pos="0 0 -0.050" rgba="0 0 0 0"/>
+                        <!-- Inertial Properties -->
+                        <inertial mass="0.10" diaginertia="100 100 100" pos="0 0 0"/>
+
+                        <!-- Rear Right Toe Link -->
+                        <body name="rear_right_toe_link" pos="0 0 -0.115">
+                            <!-- Visual Geometry -->
+                            <geom type="mesh" mesh="foot" material="grey" pos="0 -0.01 0" euler="0 -0.40010 0"/>
+                            <!-- Collision Geometry -->
+                            <geom type="mesh" mesh="foot" pos="0 -0.01 0" euler="0 -0.40010 0" contype="1" conaffinity="1"/>
+                            <!-- Inertial Properties -->
+                            <inertial mass="0.005" diaginertia="100 100 100" pos="0 0 0"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <!-- Actuators -->
+    <actuator>
+        <!-- Front Left Leg Actuators -->
+        <motor joint="motor_front_left_shoulder" ctrlrange="-1.0 1.0" gear="100"/>
+        <motor joint="motor_front_left_leg" ctrlrange="-2.17 0.97" gear="100"/>
+        <motor joint="foot_motor_front_left" ctrlrange="-0.1 2.59" gear="100"/>
+
+        <!-- Front Right Leg Actuators -->
+        <motor joint="motor_front_right_shoulder" ctrlrange="-1.0 1.0" gear="100"/>
+        <motor joint="motor_front_right_leg" ctrlrange="-2.17 0.97" gear="100"/>
+        <motor joint="foot_motor_front_right" ctrlrange="-0.1 2.59" gear="100"/>
+
+        <!-- Rear Left Leg Actuators -->
+        <motor joint="motor_rear_left_shoulder" ctrlrange="-1.0 1.0" gear="100"/>
+        <motor joint="motor_rear_left_leg" ctrlrange="-2.17 0.97" gear="100"/>
+        <motor joint="foot_motor_rear_left" ctrlrange="-0.1 2.59" gear="100"/>
+
+        <!-- Rear Right Leg Actuators -->
+        <motor joint="motor_rear_right_shoulder" ctrlrange="-1.0 1.0" gear="100"/>
+        <motor joint="motor_rear_right_leg" ctrlrange="-2.17 0.97" gear="100"/>
+        <motor joint="foot_motor_rear_right" ctrlrange="-0.1 2.59" gear="100"/>
+    </actuator>
+</mujoco>
